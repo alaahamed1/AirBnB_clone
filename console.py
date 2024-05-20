@@ -6,8 +6,6 @@ Console 0.0.1  that contains the entry point of the command interpreter
 import cmd
 import sys
 
-from models.user import User
-
 class HBNBCommand(cmd.Cmd):
 	"""The main cmd of the program for testing
 	 and adminstrative purposes"""
