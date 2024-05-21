@@ -1,26 +1,30 @@
 #!/usr/bin/python3
+""" Base Storage Module """
 
 from datetime import datetime
 from uuid import uuid4
 from models import storage
 
 
-class BaseModel:
-	"""
-	Base class for all models in the Airbnb clone application.
-	"""
+class BaseModel():
+	"""Represent a BaseModel for Data Elements"""
 
 	def __init__(self, *args, **kwargs):
 		"""
-		Initializes a new BaseModel instance.
+		Define a new Object instance of Base Model
 		Args:
-			*args: Additional arguments passed to the constructor.
-			**kwargs: Keyword arguments used to set instance attributes.
+			id (string): The id of the object being created (Primary Key)
+			created_at (datetime): The datetime Object at which
+			the Object instance has been created.
+			updated_at (datetime): The datetime Object at which
+			the Object instance has been updated Last.
 		"""
+
 
 		self.id = str(uuid4())
 		self.created_at = datetime.now()
 		self.updated_at = datetime.now()
+
 		if kwargs:
 			for key, val in kwargs.items():
 				if key != '__class__':
@@ -36,6 +40,7 @@ class BaseModel:
 						setattr(self, key, val)
 		else:
 			storage.new(self)
+	
 	def __str__(self):
 		"""Return a string representation of the class"""
 
@@ -46,22 +51,14 @@ class BaseModel:
 			)
 
 	def save(self):
-		"""
-		Updates the updated_at attribute with the current datetime and saves
-		the object to the storage engine.
-		"""
+		"Save the latest created data and record update date"
+
 		self.updated_at = datetime.now()
 		storage.save()
 
 	def to_dict(self):
-		"""
-		Returns a dictionary containing all instance attributes of the object.
+		"""Return a dictionary representation of the instance"""
 
-		The dictionary includes the following:
-			- __class__: The class name of the object.
-			- All other attributes are included with their corresponding values.
-			- created_at and updated_at are converted to ISO format strings.
-		"""
 		rep = {
 				"__class__": self.__class__.__name__,
 				"created_at": self.created_at.isoformat(),

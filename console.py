@@ -1,51 +1,69 @@
 #!/usr/bin/python3
-"""
-Console 0.0.1  that contains the entry point of the command interpreter
-"""
+""" Base Storage Module """
 
-import cmd
-import sys
+from datetime import datetime
+from uuid import uuid4
+from models import storage
 
-class HBNBCommand(cmd.Cmd):
-	"""The main cmd of the program for testing
-	 and adminstrative purposes"""
 
-	prompt = "(hbnb) "
-	def do_quit(self, arg):
-		"""Quit command to exit the program"""
-		return True
+class BaseModel():
+	"""Represent a BaseModel for Data Elements"""
 
-	def do_EOF(self, arg):
-		"""EOF command to exit the program"""
-		print("")
-		return True
-
-	def emptyline(self):
-		"""Do nothing on an empty input line"""
-		pass
-	
-	
-	def do_create(self, arg):
+	def __init__(self, *args, **kwargs):
 		"""
-		Creates a new instance of the specified model class,
-		saves it (to the JSON file), and prints the id.
-
-		Ex: $ create User email="john.doe@example.com" password="MyStrongPassword"
+		Define a new Object instance of Base Model
+		Args:
+			id (string): The id of the object being created (Primary Key)
+			created_at (datetime): The datetime Object at which
+			the Object instance has been created.
+			updated_at (datetime): The datetime Object at which
+			the Object instance has been updated Last.
 		"""
-		if not arg:
-			print("** class name missing **")
-		elif arg not in self.classes:
-			print("** class doesn't exist **")
+
+
+		self.id = str(uuid4())
+		self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+
+		if kwargs:
+			for key, val in kwargs.items():
+				if key != '__class__':
+					if key == "created_at" or key == "updated_at":
+						setattr(
+								self,
+								key,
+								datetime.strptime(
+									val,
+									'%Y-%m-%dT%H:%M:%S.%f')
+								)
+					else:
+						setattr(self, key, val)
 		else:
-			class_name = arg
-			new_instance = getattr(sys.modules[__name__], class_name)()
-			arg_dict = {}
-			for arg_pair in arg.split()[1:]:
-				key, value = arg_pair.split("=")
-				arg_dict[key] = value
-			for key, value in arg_dict.items():
-				setattr(new_instance, key, value)
-			new_instance.save()
-			print(new_instance.id)
-if __name__ == '__main__':
-	HBNBCommand().cmdloop()
+			storage.new(self)
+	
+	def __str__(self):
+		"""Return a string representation of the class"""
+
+		return "[{:s}] ({:s}) {:s}".format(
+				self.__class__.__name__,
+				self.id,
+				str(self.__dict__)
+			)
+
+	def save(self):
+		"Save the latest created data and record update date"
+
+		self.updated_at = datetime.now()
+		storage.save()
+
+	def to_dict(self):
+		"""Return a dictionary representation of the instance"""
+
+		rep = {
+				"__class__": self.__class__.__name__,
+				"created_at": self.created_at.isoformat(),
+				"updated_at": self.updated_at.isoformat()
+				}
+		dict_copy = self.__dict__.copy()
+		dict_copy.update(rep)
+		return dict_copy
