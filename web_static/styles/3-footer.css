@@ -4,7 +4,7 @@ footer{
     width: 100%;
     border-top :1px solid #CCCCCC;
     margin-top: auto;
-}
-footer p{
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
