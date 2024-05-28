@@ -1,0 +1,83 @@
+.places {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+article {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 30%;
+}
+
+.headline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price_by_night {
+    background: #FF5A5F;
+    color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.information {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.information div {
+    text-align: center;
+}
+
+.user {
+    margin: 10px 0;
+}
+
+.description {
+    margin: 10px 0;
+}
+
+.amenities, .reviews {
+    margin-top: 40px;
+}
+
+.amenities h2, .reviews h2 {
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.amenities ul, .reviews ul {
+    list-style: none;
+    padding: 0;
+}
+
+.amenities ul li, .reviews ul li {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.reviews ul li h3 {
+    font-size: 14px;
+}
+
+.reviews ul li p {
+    font-size: 12px;
+}
